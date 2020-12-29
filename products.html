@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DSV</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+      crossorigin="anonymous"
+    />
+    <style>
+      .fireImage {
+        max-width: 250px;
+        max-height: 250px;
+        width: 250px;
+        height: 250px;
+        object-fit: contain;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1 style="text-align: center">DSV</h1>
+    <div class="container">
+        <a href="/">
+            <button class="btn btn-primary">Categories Page</button></a
+          >
+    </div>
+    <div class="container">
+      <div class="Categories row"></div>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+      crossorigin="anonymous"
+    ></script>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-firestore.js"></script>
+
+    <script>
+      var firebaseConfig = {
+        apiKey: "AIzaSyCo-re6F5qtrIxJiKFRlXoPowWox95UU0o",
+        authDomain: "ds-veavers.firebaseapp.com",
+        databaseURL: "https://ds-veavers.firebaseio.com",
+        projectId: "ds-veavers",
+        storageBucket: "ds-veavers.appspot.com",
+        messagingSenderId: "153171463411",
+        appId: "1:153171463411:web:ca487385dd011c9ba43b86",
+        measurementId: "G-RDH4WQ7DN1",
+      };
+
+      const ImageRow = document.querySelector(".Categories");
+
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+      db.collection("products")
+        .get()
+        .then(function (querySnapshot) {
+          querySnapshot.forEach(function (doc) {
+            // doc.data() is never undefined for query doc snapshots
+            console.log(doc.id, " => ", doc.data());
+            Display(doc);
+          });
+        });
+
+      const Display = (details) => {
+        let html = `<table class="table">
+  <thead>
+    <tr>
+        <th scope="col">Product Id</th>
+      <th scope="col">Product Name</th>
+      <th scope="col">Price</th>
+      <th scope="col">Image</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+        <th scope="row">${details.id}</th>
+      <th scope="row">${details.data().title}</th>
+      <th scope="row">${details.data().price}</th>
+      <td>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <img class="fireImage" src="${details.data().image}"/>
+                    </div>
+            </div>
+        </td>
+    </tr>
+  </tbody>
+</table>`;
+        ImageRow.innerHTML += html;
+      };
+    </script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-analytics.js"></script>
+  </body>
+</html>
